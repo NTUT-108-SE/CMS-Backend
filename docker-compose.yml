@@ -1,11 +1,24 @@
-version: "3"
+version: "3.5"
 services:
-  hapi-fhir-jpaserver-start:
-    build: hapi-fhir-jpaserver-starter
-    container_name: hapi-fhir-jpaserver-start
-    restart: on-failure
+  mongo:
+    image: mongo:latest
+    volumes:
+      - "./mongo-data:/data/db"
     ports:
-      - "8080:8080"
+      - "127.0.0.1:27017:27017"
+    networks:
+      - proxy
+    restart: always
+
+  hapi-fhir-jpaserver-start:
+    image: sean2525/hapi-fhir-jpaserver-starter:latest
+    container_name: hapi-fhir-jpaserver-starter
+    restart: on-failure
+    networks:
+      - proxy
+    ports:
+      - "127.0.0.1:8080:8080"
+      
   hapi-fhir-mysql:
     image: mysql:latest
     container_name: hapi-fhir-mysql
@@ -15,7 +28,13 @@ services:
       MYSQL_USER: 'admin'
       MYSQL_PASSWORD: 'admin'
       MYSQL_ROOT_PASSWORD: 'admin'
+    networks:
+      - proxy
     volumes:
       - hapi-fhir-mysql:/var/lib/mysql
+
 volumes:
   hapi-fhir-mysql:
+
+networks:
+  proxy:
