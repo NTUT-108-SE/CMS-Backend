@@ -33,8 +33,5 @@ services:
     volumes:
       - "../CMS-mysql-data:/var/lib/mysql"
 
-volumes:
-  hapi-fhir-mysql:
-
 networks:
   proxy:
