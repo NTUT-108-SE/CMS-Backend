@@ -3,7 +3,7 @@ services:
   mongo:
     image: mongo:latest
     volumes:
-      - "./mongo-data:/data/db"
+      - "../CMS-mongo-data:/data/db"
     ports:
       - "127.0.0.1:27017:27017"
     networks:
@@ -31,10 +31,8 @@ services:
     networks:
       - proxy
     volumes:
-      - hapi-fhir-mysql:/var/lib/mysql
+      - "../CMS-mysql-data:/var/lib/mysql"
 
-volumes:
-  hapi-fhir-mysql:
 
 networks:
   proxy:
