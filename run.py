@@ -1,13 +1,10 @@
 import os
-from sanic import Sanic
-from sanic.response import json
-
-app = Sanic()
+from app import app
+from app.handles import index
 
 
-@app.route("/")
-async def index(request):
-    return json({"hello": "world"})
+def get_app():
+    return app
 
 
 if __name__ == "__main__":
@@ -15,5 +12,4 @@ if __name__ == "__main__":
     if debug:
         from aoiklivereload import LiveReloader
         LiveReloader().start_watcher_thread()
-
     app.run(host="0.0.0.0", port=8000, debug=debug)

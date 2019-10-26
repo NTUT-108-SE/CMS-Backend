@@ -4,11 +4,21 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+pylint = "*"
+yapf = "*"
+flake8 = "*"
+pytest = "*"
+pytest-sanic = "*"
+pytest-cov = "*"
+pytest-mock = "*"
 
 [packages]
 sanic = "*"
 sanic-graphql = "*"
 aoiklivereload = "*"
+sanic-session = "*"
+sanic-auth = "*"
+mongoengine = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.6.8"
