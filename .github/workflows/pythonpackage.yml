@@ -1,0 +1,25 @@
+name: Python package
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python 3.6
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.6
+    - name: Install all dependencies
+      run: |
+        pip install pipenv
+        pipenv sync -d
+    - name: Test with pytest
+      run: |
+        pipenv run python -m pytest --cov=./ --cov-report term-missing --cov-config=.coveragerc tests/
+    - name: Upload to codecov
+      run: |
+        pip install codecov
+        codecov
