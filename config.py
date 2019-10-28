@@ -15,7 +15,7 @@ class Config:
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     MAIL_USE_TLS = True
-    MONGO_URI = os.environ.get("MONGO_URI") or "mongodb://localhost:27017/CMS"
+    DATABASE_URL = os.environ.get("DATABASE_URL") or "mongodb://localhost:27017/CMS"
     FHIR_URL = os.environ.get("FHIR_URL") or "http://localhost:8080/hapi-fhir-jpaserver/fhir"
 
     @staticmethod

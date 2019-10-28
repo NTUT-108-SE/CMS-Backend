@@ -13,14 +13,18 @@ pytest-mock = "*"
 pytest-asyncio = "*"
 pytest-trio = "*"
 pytest-tornasync = "*"
+mongomock = "*"
 
 [packages]
 flask = "*"
 python-dotenv = "*"
 flask-mail = "*"
 flask-login = "*"
-flask-pymongo = "*"
 pytest-flask = "*"
+mongoengine = "*"
+flask-graphql = "*"
+graphene = "*"
+graphene-mongo = "*"
 
 [requires]
 python_version = "3.6.8"
