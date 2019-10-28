@@ -19,5 +19,5 @@ pipenv run python run.py
 ## Test
 
 ```bash
-pipenv run python -m pytest --cov=./ --cov-report xml --cov-config=.coveragerc tests/
+pipenv run python -m pytest --cov=./ --cov-report term-missing --cov-config=.coveragerc tests/
 ```

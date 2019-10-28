@@ -1,25 +1,23 @@
-from sanic import Sanic
-from sanic_session import Session, InMemorySessionInterface
-import logging
-
-app = Sanic(__name__)
-session = InMemorySessionInterface(cookie_name=app.name, prefix=app.name)
-
-logger = logging.getLogger(__name__)
-
-# formatter = "[%(asctime)s] {%(filename)s:%(lineno)d} %(levelname)s - %(message)s"
-# logging.basicConfig(level=logging.INFO, format=formatter)
+from flask import Flask
+from flask_mail import Mail
+from flask_pymongo import PyMongo
+from flask_login import LoginManager
+from config import config
+mail = Mail()
+db = PyMongo()
+login_manager = LoginManager()
 
 
-@app.middleware('request')
-async def add_session_to_request(request):
-    # before each request initialize a session
-    # using the client's request
-    await session.open(request)
+def create_app(config_name):
+    app = Flask(__name__)
+    app.config.from_object(config[config_name])
+    config[config_name].init_app(app)
+    mail.init_app(app)
+    db.init_app(app)
+    login_manager.init_app(app)
+    from .main import main as main_blueprint
+    from .login import login as login_blueprint
+    app.register_blueprint(main_blueprint)
+    app.register_blueprint(login_blueprint)
 
-
-@app.middleware('response')
-async def save_session(request, response):
-    # after each request save the session,
-    # pass the response to set client cookies
-    await session.save(request, response)
+    return app

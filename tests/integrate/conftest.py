@@ -1,12 +1,8 @@
 import pytest
-from run import get_app
-
-
-@pytest.yield_fixture
-def app():
-    yield get_app()
+from app import create_app
 
 
 @pytest.fixture
-def test_cli(loop, app, sanic_client):
-    return loop.run_until_complete(sanic_client(app))
+def app():
+    app = create_app('testing')
+    return app
