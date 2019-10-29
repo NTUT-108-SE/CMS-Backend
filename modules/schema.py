@@ -20,11 +20,4 @@ class Query(graphene.ObjectType):
         return list(UserModel.objects.all())
 
 
-schema = graphene.Schema(query=Query)
-query = '''
-    query {
-      users {
-        name
-      }
-    }
-'''
+graphql = graphene.Schema(query=Query)

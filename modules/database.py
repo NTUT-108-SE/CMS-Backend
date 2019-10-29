@@ -1,4 +1,5 @@
-from mongoengine import Document, EmailField, StringField, URLField
+import re
+from mongoengine import Document, EmailField, StringField, URLField, BooleanField
 
 
 class User(Document):
@@ -7,3 +8,4 @@ class User(Document):
     password = StringField(required=True)
     image = URLField()
     introduction = StringField()
+    role = StringField(default="Nurse", regex=re.compile('(Nurse|Doctor|Admin)'))
