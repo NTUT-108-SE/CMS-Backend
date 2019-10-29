@@ -2,6 +2,7 @@
 import graphene
 from .database import User as UserModel
 from graphene_mongo import MongoengineObjectType
+from mongoengine import DoesNotExist
 
 
 class User(MongoengineObjectType):
@@ -14,7 +15,10 @@ class Query(graphene.ObjectType):
     users = graphene.List(User)
 
     def resolve_user(self, info, email):
-        return UserModel.objects.get(email=email)
+        try:
+            return UserModel.objects.get(email=email)
+        except DoesNotExist:
+            return None
 
     def resolve_users(self, info):
         return list(UserModel.objects.all())
