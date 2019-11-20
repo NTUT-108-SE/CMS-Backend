@@ -1,0 +1,9 @@
+MAIL_PROT=
+MAIL_USERNAME=
+MAIL_PASSWORD=
+SECRET_KEY="q2uh4ri2uhoi5h1o4ijoi1j34"
+HOST=0.0.0.0
+PORT=8000
+FLASK_CONFIG=development
+FLASK_ENV=development
+CORS_HOST='["http://localhost:8000", "http://localhost:8080"]'

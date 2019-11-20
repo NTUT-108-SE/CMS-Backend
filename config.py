@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
-load_dotenv()
+import json
+load_dotenv(dotenv_path=".environment")
 
 
 class Config:
@@ -17,6 +18,7 @@ class Config:
     MAIL_USE_TLS = True
     DATABASE_URL = os.environ.get("DATABASE_URL") or "mongodb://localhost:27017/CMS"
     FHIR_URL = os.environ.get("FHIR_URL") or "http://localhost:8080/hapi-fhir-jpaserver/fhir"
+    CORS_HOST = json.loads(os.environ.get("CORS_HOST") or '["http://localhost:8080"]')
 
     @staticmethod
     def init_app(app):

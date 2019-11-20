@@ -15,3 +15,9 @@ def index():
 def logout():
     logout_user()
     return make_response(jsonify({"success": True}), 200)
+
+
+@main.route('/check')
+@login_required()
+def check():
+    return make_response(jsonify({"success": True}), 200)

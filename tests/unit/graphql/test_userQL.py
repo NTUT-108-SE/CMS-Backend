@@ -1,6 +1,4 @@
 import pytest
-import graphene
-from graphene_mongo import MongoengineObjectType
 from modules.schema import graphql
 
 
