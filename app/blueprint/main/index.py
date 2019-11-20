@@ -1,7 +1,7 @@
 from flask import make_response
 from flask.json import jsonify
 from flask_login import logout_user
-from modules.login_manager import login_required
+from app.modules.login_manager import login_required
 from . import main
 
 

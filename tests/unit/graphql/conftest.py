@@ -1,6 +1,6 @@
 import pytest
 from mongoengine import connect, disconnect
-from modules import database
+from app.modules import database
 
 
 @pytest.fixture

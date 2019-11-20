@@ -2,8 +2,7 @@ import os
 from app import create_app
 from flask import make_response, request
 from mongoengine import connect
-from modules.database import User
-from modules import login_manager
+import app.modules
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 
@@ -16,7 +15,7 @@ def af_request(resp):
     :return:
     """
     resp = make_response(resp)
-    if request.environ['HTTP_ORIGIN'] in app.config.get('CORS_HOST'):
+    if request.environ.get('HTTP_ORIGIN') in app.config.get('CORS_HOST'):
         resp.headers['Access-Control-Allow-Origin'] = request.environ['HTTP_ORIGIN']
         resp.headers['Access-Control-Allow-Methods'] = 'GET,POST'
         resp.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'

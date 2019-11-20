@@ -35,7 +35,7 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
-    DATABASE_URL = "mongodb://localhost:27017/TESTING"
+    DATABASE_URL = "mongomock://localhost"
     SECRET_KEY = "DEBUG"
     PORT = 8000
     HOST = "127.0.0.1"

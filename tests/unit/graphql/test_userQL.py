@@ -1,5 +1,5 @@
 import pytest
-from modules.schema import graphql
+from app.modules.schema import graphql
 
 
 def test_list_user(db_user):

@@ -14,13 +14,14 @@ pytest-asyncio = "*"
 pytest-trio = "*"
 pytest-tornasync = "*"
 mongomock = "*"
+pytest-flask = "*"
+
 
 [packages]
 flask = "*"
 python-dotenv = "*"
 flask-mail = "*"
 flask-login = "*"
-pytest-flask = "*"
 mongoengine = "*"
 flask-graphql = "*"
 graphene = "*"

@@ -1,5 +1,5 @@
 from app import login_manager
-from modules.schema import graphql
+from app.modules.schema import graphql
 from flask_login import current_user
 from functools import wraps
 import graphene

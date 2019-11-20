@@ -15,9 +15,8 @@ def create_app(config_name='default'):
     mail.init_app(app)
     login_manager.init_app(app)
     connect(host=config[config_name].DATABASE_URL)
-    from .main import main as main_blueprint
-    from .login import login as login_blueprint
-    app.register_blueprint(main_blueprint)
-    app.register_blueprint(login_blueprint)
+    from .blueprint import main_bp, login_bp
+    app.register_blueprint(main_bp)
+    app.register_blueprint(login_bp)
 
     return app

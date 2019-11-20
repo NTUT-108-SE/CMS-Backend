@@ -4,3 +4,4 @@ omit =
     run.py
     config.py
     */__init__.py
+    app/modules/login_manager.py

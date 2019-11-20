@@ -1,7 +1,7 @@
 from . import login
 import json
-from modules.login_manager import User
-from modules.schema import graphql
+from app.modules.login_manager import User
+from app.modules.schema import graphql
 from flask_login import login_user, current_user
 from flask import make_response, request
 from flask.json import jsonify

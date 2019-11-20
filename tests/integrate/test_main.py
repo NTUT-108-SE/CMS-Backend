@@ -7,6 +7,7 @@ def test_main(client):
     assert res.json == {"success": True}
 
 
-def test_logout(client):
-    res = client.get("/logout")
-    assert res.status_code == 401
+def test_error_page(client):
+    res = client.get("/not-found-page")
+    assert res.status_code == 404
+    assert res.json == {"error": "Page not found!"}
