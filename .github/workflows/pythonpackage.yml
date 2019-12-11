@@ -17,7 +17,7 @@ jobs:
       - name: Install all dependencies
         run: |
           pip install pipenv
-          pipenv sync -d
+          pipenv --python python3 sync -d
       - name: Test with pytest
         run: |
           pipenv run python -m pytest --cov=./ --cov-report xml --cov-config=.coveragerc tests/
