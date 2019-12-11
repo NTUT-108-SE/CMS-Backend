@@ -30,32 +30,32 @@ def get_all_patients():
             'editTime': "2019-10-20"
         }
     ]
-    return make_response(jsonify({'success': True, 'patients': patients}), 200)
+    return make_response(jsonify({'ok': True, 'patients': patients}), 200)
 
 
 @patient.route('<patient_id>', methods=["GET"])
 @login_required()
-def get_patient(patient_id):
+def get(patient_id):
     #Todo
-    return make_response(jsonify({'success': True, 'result': patient_id}), 200)
+    return make_response(jsonify({'ok': True, 'result': patient_id}), 200)
 
 
 @patient.route('<patient_id>', methods=["PUT"])
 @login_required()
 def change(patient_id):
     #Todo
-    return make_response(jsonify({'success': True, 'result': patient_id + ' changed'}), 200)
+    return make_response(jsonify({'ok': True, 'result': patient_id + ' changed'}), 200)
 
 @patient.route('<patient_id>', methods=["DELETE"])
 @login_required()
 def delete(patient_id):
     #Todo
-    return make_response(jsonify({'success': True, 'result': patient_id + ' deleted'}), 200)
+    return make_response(jsonify({'ok': True, 'result': patient_id + ' deleted'}), 200)
 
 @patient.route('', methods=["POST"])
 @login_required()
 def create():
     #Todo
-    return make_response(jsonify({'success': True, 'result': patient_id + ' created'}), 200)
+    return make_response(jsonify({'ok': True, 'result': 'created'}), 200)
 
 
