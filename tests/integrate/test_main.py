@@ -4,7 +4,7 @@ import pytest
 def test_main(client):
     res = client.get("/")
     assert res.status_code == 200
-    assert res.json == {"success": True}
+    assert res.json == {"ok": True}
 
 
 def test_error_page(client):

@@ -1,3 +1,4 @@
+import json
 from . import user
 from app.modules.graphql import graphql
 from flask import make_response, request
@@ -79,8 +80,8 @@ def create():
     name = form.get('name')
     password = form.get('password')
     role = form.get('role')
-    image = form.get('image')
-    introduction = form.get('introduction')
+    image = form.get('image', "")
+    introduction = form.get('introduction', "")
 
     result = graphql.execute(
         '''

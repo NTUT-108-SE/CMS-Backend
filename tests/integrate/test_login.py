@@ -1,39 +1,41 @@
 import pytest
 
 
-def test_login_failed(db_client):
-    res = db_client.post("/login", data={'{"email": "test", "password": "test" }': ''})
+def test_login_failed(user_client):
+    res = user_client.post("/login", data={'{"email": "admin@gmail.com", "password": "asd" }': ''})
     assert res.status_code == 401
 
 
-def test_login_None(db_client):
-    res = db_client.post("/login", data={'{"email": "test@gmail.com" }': ''})
+def test_login_None(user_client):
+    res = user_client.post("/login", data={'{"email": "admin@gmail.com" }': ''})
     assert res.status_code == 401
 
 
-def test_login(db_client):
-    res = db_client.post("/login", data={'{"email": "test@gmail.com", "password": "test" }': ''})
+def test_login(user_client):
+    res = user_client.post(
+        "/login", data={'{"email": "admin@gmail.com", "password": "admin" }': ''}
+    )
     assert res.status_code == 200
-    assert res.json['user']['email'] == "test@gmail.com"
+    assert res.json['user']['email'] == "admin@gmail.com"
 
 
-def test_logout(db_client):
-    test_login(db_client)
-    res = db_client.get("/logout")
+def test_logout(user_client):
+    test_login(user_client)
+    res = user_client.get("/logout")
     assert res.status_code == 200
 
 
-def test_logout_before_login(db_client):
-    res = db_client.get("/logout")
+def test_logout_before_login(user_client):
+    res = user_client.get("/logout")
     assert res.status_code == 401
 
 
-def test_check_failed(db_client):
-    res = db_client.get("/check")
+def test_check_failed(user_client):
+    res = user_client.get("/check")
     assert res.status_code == 401
 
 
-def test_check_failed(db_client):
-    test_login(db_client)
-    res = db_client.get("/check")
+def test_check_failed(user_client):
+    test_login(user_client)
+    res = user_client.get("/check")
     assert res.status_code == 200

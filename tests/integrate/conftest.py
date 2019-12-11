@@ -14,9 +14,24 @@ def app():
 
 
 @pytest.fixture
-def db_client(client):
-    user1 = User.create(email="test@gmail.com", name="User1", password="test", role="Admin")
-    user2 = User.create(email="test2@gmail.com", name="User2", password="test", role="Admin")
+def user_client(client):
+    admin = User.create(email="admin@gmail.com", name="admin", password="admin", role="Admin")
+    doctor = User.create(email="doctor@gmail.com", name="doctor", password="doctor", role="Doctor")
+    nurse = User.create(email="nurse@gmail.com", name="nurse", password="nurse", role="Nurse")
     yield client
-    user1.delete()
-    user2.delete()
+    admin.delete()
+    doctor.delete()
+    nurse.delete()
+
+
+@pytest.fixture
+def admin_client(user_client):
+    res = user_client.post(
+        "/login", data={'{"email": "admin@gmail.com", "password": "admin" }': ''}
+    )
+    assert res.status_code == 200
+
+    yield user_client
+
+    res = user_client.get("/logout")
+    assert res.status_code == 200

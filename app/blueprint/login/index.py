@@ -15,7 +15,7 @@ def login_index():
     if email is None or password is None:
         return make_response(
             jsonify({
-                'success': False,
+                'ok': False,
                 'message': "email or password should not be None"
             }), 401
         )
@@ -31,7 +31,7 @@ def login_index():
     ).data['login']['ok']
 
     if ok != True:
-        return make_response(jsonify({'success': False, 'message': "vlidate failed."}), 401)
+        return make_response(jsonify({'ok': ok, 'message': "vlidate failed."}), 401)
 
     user = User(email=email)
     login_user(user)
@@ -48,4 +48,4 @@ def login_index():
         }
         ''' % user.get_id()
     ).data['user']
-    return make_response(jsonify({'success': True, 'user': rep_user}), 200)
+    return make_response(jsonify({'ok': ok, 'user': rep_user}), 200)
