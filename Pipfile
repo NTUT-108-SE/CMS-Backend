@@ -16,7 +16,6 @@ pytest-tornasync = "*"
 mongomock = "*"
 pytest-flask = "*"
 
-
 [packages]
 flask = "*"
 python-dotenv = "*"
@@ -26,6 +25,7 @@ mongoengine = "*"
 flask-graphql = "*"
 graphene = "*"
 graphene-mongo = "*"
+py-bcrypt = "*"
 
 [requires]
 python_version = "3.6.8"

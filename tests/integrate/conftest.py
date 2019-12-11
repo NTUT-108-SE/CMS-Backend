@@ -1,7 +1,7 @@
 import pytest
 from app import create_app
 from mongoengine import disconnect_all
-from app.modules import database
+from app.modules.domain.User import User
 
 
 @pytest.fixture
@@ -15,8 +15,8 @@ def app():
 
 @pytest.fixture
 def db_client(client):
-    user1 = database.User("test@gmail.com", name="User1", password="test").save()
-    user2 = database.User("test2@gmail.com", name="User2", password="test").save()
+    user1 = User.create(email="test@gmail.com", name="User1", password="test", role="Admin")
+    user2 = User.create(email="test2@gmail.com", name="User2", password="test", role="Admin")
     yield client
     user1.delete()
     user2.delete()
