@@ -1,6 +1,6 @@
 from app import login_manager
 from app.modules.graphql import graphql
-from app.modules.domain.User import User
+from app.modules.domain.user import User
 from flask_login import current_user
 from functools import wraps
 import graphene

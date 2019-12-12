@@ -54,10 +54,14 @@ class User(MongoengineObjectType):
     def get(self):
         return self._user
 
-    def get_json(self):
-        return self._user.to_json()
+    def update_role(self, role):
+        if role in ["Admin", "Doctor", "Nurse"]:
+            self._user.role = role
+            self.save()
+        else:
+            raise ValueError("Must be one of Admin, Doctor, Nurse!")
 
-    def save_hash_pass(self, password):
+    def update_password(self, password):
         self._user.password = bcrypt.hashpw(password, bcrypt.gensalt())
         self.save()
 
@@ -65,7 +69,7 @@ class User(MongoengineObjectType):
         return bcrypt.checkpw(password, self._user.password)
 
     def update(self, user):
-        self._user.update(user)
+        self._user.update(**user)
         self.save()
 
     def get_id(self):
@@ -75,7 +79,7 @@ class User(MongoengineObjectType):
         return self._user['email']
 
     def is_authenticated(self):
-        return True if self._user.get('id') is not None else False
+        return True if self.get_id() is not None else False
 
     def is_active(self):
         return True
@@ -91,3 +95,9 @@ class User(MongoengineObjectType):
 
     def get_password(self):
         return self._user['password']
+
+    def get_image(self):
+        return self._user['image']
+
+    def get_introduction(self):
+        return self._user['introduction']

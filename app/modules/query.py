@@ -1,6 +1,6 @@
 # pylint: disable=no-member
 import graphene
-from .domain.User import User
+from .domain.user import User
 from graphene_mongo import MongoengineObjectType
 from mongoengine import DoesNotExist
 
