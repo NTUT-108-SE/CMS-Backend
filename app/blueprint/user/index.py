@@ -156,3 +156,24 @@ def create():
         return make_response(jsonify({'ok': ok, 'user': result['user']}), 200)
     else:
         return make_response(jsonify({'ok': ok}), 400)
+
+
+@user.route('/change_password', methods=["POST"])
+@login_required()
+def change_password():
+    form = json.loads(list(request.form.keys())[0])
+    password = form.get('password')
+    if password == None:
+        return make_response(jsonify({'ok': False}), 400)
+
+    ok = graphql.execute(
+        '''
+    mutation {
+        mutateUser(userData: {id: "%s", password: "%s"}){
+            ok
+        }
+    }
+    ''' % (current_user.get_id(), password)
+    ).data['mutateUser']['ok']
+
+    return make_response(jsonify({'ok': ok}), 200 if ok else 400)

@@ -68,3 +68,25 @@ def test_change_user(admin_client):
     assert res.json['user']['name'] == 'test'
     assert res.json['user']['image'] == 'test_image'
     assert res.json['user']['introduction'] == 'test_intro'
+
+def test_change_password(admin_client):
+    res = admin_client.post(
+        "/user/change_password",
+        data={
+            '{"password1": ""}':''
+        }
+    )
+    assert res.json['ok'] == False
+
+    res = admin_client.post(
+        "/user/change_password",
+        data={
+            '{"password": "test"}':''
+        }
+    )
+    assert res.json['ok'] == True
+
+    res = admin_client.post(
+        "/login", data={'{"email": "admin@gmail.com", "password": "test" }': ''}
+    )
+    assert res.json['ok'] == True
