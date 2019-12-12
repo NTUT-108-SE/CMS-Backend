@@ -21,3 +21,14 @@ pipenv run python run.py
 ```bash
 pipenv run python -m pytest --cov=./ --cov-report term-missing --cov-config=.coveragerc tests/
 ```
+
+## Coding style
+
+```
+pipenv run yapf -i -r .
+```
+
+## Contribute
+
+Before commit or PR  
+Please pass the **test** and keep the same **coding style**.

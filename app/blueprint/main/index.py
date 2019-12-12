@@ -7,17 +7,17 @@ from . import main
 
 @main.route('/', methods=["GET"])
 def index():
-    return make_response(jsonify({"success": True}), 200)
+    return make_response(jsonify({"ok": True}), 200)
 
 
 @main.route('/logout')
 @login_required()
 def logout():
     logout_user()
-    return make_response(jsonify({"success": True}), 200)
+    return make_response(jsonify({"ok": True}), 200)
 
 
 @main.route('/check')
 @login_required()
 def check():
-    return make_response(jsonify({"success": True}), 200)
+    return make_response(jsonify({"ok": True}), 200)

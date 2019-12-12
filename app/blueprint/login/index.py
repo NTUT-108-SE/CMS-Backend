@@ -1,7 +1,7 @@
 from . import login
 import json
-from app.modules.login_manager import User
-from app.modules.schema import graphql
+from app.modules.graphql import graphql
+from app.modules.domain.user import User
 from flask_login import login_user, current_user
 from flask import make_response, request
 from flask.json import jsonify
@@ -15,20 +15,30 @@ def login_index():
     if email is None or password is None:
         return make_response(
             jsonify({
-                'success': False,
+                'ok': False,
                 'message': "email or password should not be None"
             }), 401
         )
 
-    user = User(email)
-    if user.get_id() != email or user.get_password() != password:
-        return make_response(jsonify({'success': False, 'message': "vlidate failed."}), 401)
+    ok = graphql.execute(
+        '''
+    query {
+        login(email: "%s", password:"%s"){
+            ok
+        }
+    }
+    ''' % (email, password)
+    ).data['login']['ok']
 
+    if ok != True:
+        return make_response(jsonify({'ok': ok, 'message': "vlidate failed."}), 401)
+
+    user = User(email=email)
     login_user(user)
     rep_user = graphql.execute(
         '''
         query {
-            user(email: "%s") {
+            user(id: "%s") {
                 email
                 name
                 role
@@ -38,4 +48,4 @@ def login_index():
         }
         ''' % user.get_id()
     ).data['user']
-    return make_response(jsonify({'success': True, 'user': rep_user}), 200)
+    return make_response(jsonify({'ok': ok, 'user': rep_user}), 200)
