@@ -118,7 +118,7 @@ def change():
     return make_response(jsonify({'ok': ok, 'user': user}), 200 if ok else 400)
 
 
-@user.route('/create', methods=["POST"])
+@user.route('', methods=["POST"])
 @login_required(role="Admin")
 def create():
     form = json.loads(list(request.form.keys())[0])

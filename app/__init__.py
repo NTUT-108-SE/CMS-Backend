@@ -18,10 +18,11 @@ def create_app(config_name='default'):
     login_manager.init_app(app)
     connect(host=config[config_name].DATABASE_URL)
     print("DB Connectd at " + config[config_name].DATABASE_URL)
-    from .blueprint import main_bp, login_bp, user_bp
+    from .blueprint import main_bp, login_bp, user_bp, healthrecord_bp
     app.register_blueprint(main_bp)
     app.register_blueprint(login_bp)
     app.register_blueprint(user_bp)
+    app.register_blueprint(healthrecord_bp)
     if config[config_name].DEBUG == True:
         app.add_url_rule(
             '/graphql', view_func=GraphQLView.as_view('graphql', schema=graphql, graphiql=True)

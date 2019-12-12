@@ -32,7 +32,7 @@ def test_delete_user(admin_client):
 
 def test_create_user(admin_client):
     res = admin_client.post(
-        "/user/create",
+        "/user",
         data={
             '{"email": "test@gmail.com", "name": "test", "password": "test", "role": "Nurse" }': ''
         }
@@ -68,4 +68,3 @@ def test_change_user(admin_client):
     assert res.json['user']['name'] == 'test'
     assert res.json['user']['image'] == 'test_image'
     assert res.json['user']['introduction'] == 'test_intro'
-
