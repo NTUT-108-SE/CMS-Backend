@@ -12,8 +12,22 @@ def db():
 
 @pytest.fixture
 def db_user(db):
-    user1 = User.create(email="test@gmail.com", name="User1", password="test", role="Admin", image="", introduction="")
-    user2 = User.create(email="test2@gmail.com", name="User2", password="test", role="Admin", image="", introduction="")
+    user1 = User.create(
+        email="test@gmail.com",
+        name="User1",
+        password="test",
+        role="Admin",
+        image="",
+        introduction=""
+    )
+    user2 = User.create(
+        email="test2@gmail.com",
+        name="User2",
+        password="test",
+        role="Admin",
+        image="",
+        introduction=""
+    )
     yield
     user1.delete()
     user2.delete()

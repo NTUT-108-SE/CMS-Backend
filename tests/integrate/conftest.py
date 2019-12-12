@@ -13,9 +13,30 @@ def app():
 
 @pytest.fixture
 def user_client(client):
-    admin = User.create(email="admin@gmail.com", name="admin", password="admin", role="Admin", image="", introduction="")
-    doctor = User.create(email="doctor@gmail.com", name="doctor", password="doctor", role="Doctor", image="", introduction="")
-    nurse = User.create(email="nurse@gmail.com", name="nurse", password="nurse", role="Nurse", image="", introduction="")
+    admin = User.create(
+        email="admin@gmail.com",
+        name="admin",
+        password="admin",
+        role="Admin",
+        image="",
+        introduction=""
+    )
+    doctor = User.create(
+        email="doctor@gmail.com",
+        name="doctor",
+        password="doctor",
+        role="Doctor",
+        image="",
+        introduction=""
+    )
+    nurse = User.create(
+        email="nurse@gmail.com",
+        name="nurse",
+        password="nurse",
+        role="Nurse",
+        image="",
+        introduction=""
+    )
     yield client
     admin.delete()
     doctor.delete()
