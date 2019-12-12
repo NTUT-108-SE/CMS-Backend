@@ -15,11 +15,12 @@ def create_app(config_name='default'):
     mail.init_app(app)
     login_manager.init_app(app)
     connect(host=config[config_name].DATABASE_URL)
-    from .blueprint import main_bp, login_bp, patient_bp, registration_bp, invoice_bp
+    from .blueprint import main_bp, login_bp, patient_bp, registration_bp, invoice_bp, medication_bp
     app.register_blueprint(main_bp)
     app.register_blueprint(login_bp)
     app.register_blueprint(patient_bp)
     app.register_blueprint(registration_bp)
     app.register_blueprint(invoice_bp)
+    app.register_blueprint(medication_bp)
 
     return app
