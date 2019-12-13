@@ -69,20 +69,13 @@ def test_change_user(admin_client):
     assert res.json['user']['image'] == 'test_image'
     assert res.json['user']['introduction'] == 'test_intro'
 
+
 def test_change_password(admin_client):
-    res = admin_client.post(
-        "/user/change_password",
-        data={
-            '{"password1": ""}':''
-        }
-    )
+    res = admin_client.post("/user/change_password", data={'{"password1": ""}': ''})
     assert res.json['ok'] == False
 
     res = admin_client.post(
-        "/user/change_password",
-        data={
-            '{"password": "test"}':''
-        }
+        "/user/change_password", data={'{"old_password": "admin", "password": "test"}': ''}
     )
     assert res.json['ok'] == True
 

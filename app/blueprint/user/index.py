@@ -69,7 +69,7 @@ def update_role(user_id):
     ''' % (user_id, role)
     ).data['mutateUser']['ok']
 
-    return make_response(jsonify({'ok': ok}), 200)
+    return make_response(jsonify({'ok': ok}), 200 if ok else 400)
 
 
 @user.route('/<user_id>', methods=["DELETE"])
@@ -152,18 +152,30 @@ def create():
 
     ok = result['ok']
 
-    if result['ok']:
-        return make_response(jsonify({'ok': ok, 'user': result['user']}), 200)
-    else:
-        return make_response(jsonify({'ok': ok}), 400)
+    return make_response(jsonify({'ok': ok, 'user': result['user']}), 200 if ok else 400)
 
 
 @user.route('/change_password', methods=["POST"])
 @login_required()
 def change_password():
     form = json.loads(list(request.form.keys())[0])
+    old_password = form.get('old_password')
     password = form.get('password')
-    if password == None:
+
+    if password == None or old_password == None:
+        return make_response(jsonify({'ok': False}), 400)
+
+    ok = graphql.execute(
+        '''
+        query {
+            login(email: "%s", password: "%s"){
+                ok
+            }
+        }
+        ''' % (current_user.get_email(), old_password)
+    ).data['login']['ok']
+
+    if ok is False:
         return make_response(jsonify({'ok': False}), 400)
 
     ok = graphql.execute(
