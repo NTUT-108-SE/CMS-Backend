@@ -18,7 +18,9 @@ class Query(graphene.ObjectType):
         Result, email=graphene.String(required=True), password=graphene.String(required=True)
     )
     health_record = graphene.Field(HealthRecordMeta, id=graphene.Int(required=True))
-    health_records = graphene.Field(HealthRecordsMeta, offset=graphene.Int(), count=graphene.Int())
+    health_records = graphene.Field(
+        HealthRecordsMeta, offset=graphene.Int(), count=graphene.Int(), patient_id=graphene.Int()
+    )
 
     def resolve_user(self, info, email=None, id=None):
         try:
@@ -48,9 +50,13 @@ class Query(graphene.ObjectType):
         except Exception:
             return None
 
-    def resolve_health_records(self, info, offset=0, count=20):
+    def resolve_health_records(self, info, offset=0, count=20, patient_id=None):
         try:
-            hrs = HealthRecord.get_all(offset, count)
+            hrs = None
+            if patient_id == None:
+                hrs = HealthRecord.get_all(offset, count)
+            else:
+                hrs = HealthRecord.query_patient(patient_id, offset, count)
             return hrs
         except Exception:
             return None

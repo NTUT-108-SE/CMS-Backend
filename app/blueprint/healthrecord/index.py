@@ -37,24 +37,47 @@ def get_healthrecord(healthrecord_id):
 def get_all():
     offset = request.args.get('offset', default=0, type=int)
     count = request.args.get('count', default=20, type=int)
-    result = graphql.execute(
-        '''
-    query {
-        healthRecords(offset: %s, count: %s){
-            total
-            entry{
-            id
-            patientId
-            code
-            medication
-            date
+    patient_id = request.args.get('patientId', default=None, type=int)
+
+    result = None
+    if patient_id == None:
+        result = graphql.execute(
+            '''
+        query {
+            healthRecords(offset: %s, count: %s){
+                total
+                entry{
+                id
+                patientId
+                code
+                medication
+                date
+                }
+                offset
+                count
             }
-            offset
-            count
         }
-    }
-    ''' % (offset, count)
-    ).data['healthRecords']
+        ''' % (offset, count)
+        ).data['healthRecords']
+    else:
+        result = graphql.execute(
+            '''
+        query {
+            healthRecords(offset: %s, count: %s, patientId: %s){
+                total
+                entry{
+                id
+                patientId
+                code
+                medication
+                date
+                }
+                offset
+                count
+            }
+        }
+        ''' % (offset, count, patient_id)
+        ).data['healthRecords']
     return make_response(jsonify({'ok': True, 'healthrecords': result}), 200)
 
 
