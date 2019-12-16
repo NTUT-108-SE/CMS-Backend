@@ -1,6 +1,8 @@
 # pylint: disable=no-member
 import graphene
 from .domain.user import User
+from .domain.healthrecord import HealthRecord
+from .sub_graphql.healthrecord_graphql import HealthRecordMeta, HealthRecordsMeta
 from graphene_mongo import MongoengineObjectType
 from mongoengine import DoesNotExist
 
@@ -15,6 +17,8 @@ class Query(graphene.ObjectType):
     login = graphene.Field(
         Result, email=graphene.String(required=True), password=graphene.String(required=True)
     )
+    health_record = graphene.Field(HealthRecordMeta, id=graphene.String(required=True))
+    health_records = graphene.Field(HealthRecordsMeta, offset=graphene.Int(), count=graphene.Int())
 
     def resolve_user(self, info, email=None, id=None):
         try:
@@ -36,3 +40,17 @@ class Query(graphene.ObjectType):
             return Result(ok=user.check_password(password))
         except Exception:
             return Result(ok=False)
+
+    def resolve_health_record(self, info, id):
+        try:
+            hr = HealthRecord(id=id)
+            return hr
+        except Exception:
+            return None
+
+    def resolve_health_records(self, info, offset=0, count=20):
+        try:
+            hrs = HealthRecord.get_all(offset, count)
+            return hrs
+        except Exception:
+            return None

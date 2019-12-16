@@ -26,6 +26,7 @@ flask-graphql = "*"
 graphene = "*"
 graphene-mongo = "*"
 py-bcrypt = "*"
+requests = "*"
 
 [requires]
 python_version = "3.6.8"
