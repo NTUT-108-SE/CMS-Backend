@@ -65,10 +65,9 @@ class HealthRecord:
 
         return {'total': hrs['total'], 'entry': _hrs, 'offset': offset, 'count': count}
 
-    def update(self, code, medication, date, patient_id=None):
+    def update(self, code, medication, date=None, patient_id=None):
         self.code = code
         self.medication = medication
-        self.date = date
 
         self._hr, status_code = self.condition.update(self.id, self._hr)
         if status_code != 200:

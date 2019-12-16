@@ -17,7 +17,7 @@ class Query(graphene.ObjectType):
     login = graphene.Field(
         Result, email=graphene.String(required=True), password=graphene.String(required=True)
     )
-    health_record = graphene.Field(HealthRecordMeta, id=graphene.String(required=True))
+    health_record = graphene.Field(HealthRecordMeta, id=graphene.Int(required=True))
     health_records = graphene.Field(HealthRecordsMeta, offset=graphene.Int(), count=graphene.Int())
 
     def resolve_user(self, info, email=None, id=None):
