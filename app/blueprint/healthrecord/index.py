@@ -19,6 +19,8 @@ def get_healthrecord(healthrecord_id):
             code
             medication
             date
+            identifier
+            name
         }
     }
     ''' % healthrecord_id
@@ -52,6 +54,8 @@ def get_all():
                     code
                     medication
                     date
+                    identifier
+                    name
                 }
                 offset
                 count
@@ -71,6 +75,8 @@ def get_all():
                     code
                     medication
                     date
+                    identifier
+                    name
                 }
                 offset
                 count
@@ -88,15 +94,17 @@ def create():
     patient_id = form.get('patientId')
     code = form.get('code')
     medication = form.get('medication')
+    identifier = form.get('identifier')
+    name = form.get('name')
     date = datetime.today().strftime('%Y-%m-%d')
 
-    if patient_id == None or code == None or medication == None:
+    if patient_id is None or code is None or medication is None or identifier is None or name is None:
         return make_response(jsonify({'ok': False}), 400)
 
     result = graphql.execute(
         '''
     mutation {
-        createHealthRecord(healthRecordData: {patientId: %s, code: "%s", medication: "%s", date: "%s"}) {
+        createHealthRecord(healthRecordData: {patientId: %s, code: "%s", medication: "%s", date: "%s", identifier: "%s", name: "%s"}) {
             ok
             healthRecord {
                 id
@@ -104,9 +112,11 @@ def create():
                 medication
                 patientId
                 date
+                identifier
+                name
             }
         }
-    }''' % (patient_id, code, medication, date)
+    }''' % (patient_id, code, medication, date, identifier, name)
     ).data['createHealthRecord']
 
     ok = result['ok']
@@ -121,14 +131,16 @@ def change(healthrecord_id):
     form = json.loads(list(request.form.keys())[0])
     code = form.get('code')
     medication = form.get('medication')
+    identifier = form.get('identifier')
+    name = form.get('name')
 
-    if code == None or medication == None:
+    if code is None or medication is None or identifier is None or name is None:
         return make_response(jsonify({'ok': False}), 400)
 
     result = graphql.execute(
         '''
     mutation {
-        mutateHealthRecord(id: %s,healthRecordData: {code: "%s", medication: "%s"}) {
+        mutateHealthRecord(id: %s,healthRecordData: {code: "%s", medication: "%s", identifier: "%s", name: "%s"}) {
             ok
             healthRecord {
                 id
@@ -136,9 +148,11 @@ def change(healthrecord_id):
                 medication
                 patientId
                 date
+                identifier
+                name
             }
         }
-    }''' % (healthrecord_id, code, medication)
+    }''' % (healthrecord_id, code, medication, identifier, name)
     ).data['mutateHealthRecord']
 
     ok = result['ok']

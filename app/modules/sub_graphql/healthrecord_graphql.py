@@ -8,6 +8,8 @@ class HealthRecordMeta(graphene.ObjectType):
     code = graphene.String()
     medication = graphene.String()
     date = graphene.String()
+    identifier = graphene.String()
+    name = graphene.String()
 
 
 class HealthRecordsMeta(graphene.ObjectType):
@@ -22,6 +24,8 @@ class HealthRecordInput(graphene.InputObjectType):
     code = graphene.String()
     medication = graphene.String()
     date = graphene.String()
+    identifier = graphene.String()
+    name = graphene.String()
 
 
 class CreateHealthRecord(graphene.Mutation):

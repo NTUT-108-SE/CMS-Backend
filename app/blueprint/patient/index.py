@@ -15,17 +15,20 @@ def get_all_patients():
         '''
         query {
             patients(offset: %s, count: %s) {
-                entry{
-                id
-                identifier
-                address
-                gender
-                family
-                given
-                phone
-                birthDate
-                maritalStatus
+                total
+                    entry{
+                        id
+                        identifier
+                        address
+                        gender
+                        family
+                        given
+                        phone
+                        birthDate
+                        maritalStatus
                 }
+                offset
+                count
             }
         }
         ''' % (offset, count)

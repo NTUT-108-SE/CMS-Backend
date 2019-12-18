@@ -16,12 +16,16 @@ class HealthRecord:
             raise AttributeError()
 
     @classmethod
-    def create(cls, patient_id, code, medication, date):
+    def create(cls, patient_id, code, medication, date, identifier, name):
         health_record = {
             "resourceType": "Condition",
             "recordedDate": date,
             "subject": {
-                "reference": "Patient/{}".format(patient_id)
+                "reference": "Patient/{}".format(patient_id),
+                "display": name,
+                "identifier": {
+                    'value': identifier
+                },
             },
             "code": {
                 "text": code
@@ -65,9 +69,11 @@ class HealthRecord:
 
         return {'total': hrs['total'], 'entry': _hrs, 'offset': offset, 'count': count}
 
-    def update(self, code, medication, date=None, patient_id=None):
+    def update(self, code, medication, identifier=None, name=None, date=None, patient_id=None):
         self.code = code
         self.medication = medication
+        self.identifier = identifier
+        self.name = name
 
         self._hr, status_code = self.fhir.update(self.id, self.get())
         if status_code != 200:
@@ -107,3 +113,19 @@ class HealthRecord:
     @date.setter
     def date(self, new_date):
         self._hr['recordedDate'] = new_date
+
+    @property
+    def identifier(self):
+        return self._hr['subject']['identifier']['value']
+
+    @identifier.setter
+    def identifier(self, new_identifier):
+        self._hr['subject']['identifier']['value'] = new_identifier
+
+    @property
+    def name(self):
+        return self._hr['subject']['display']
+
+    @name.setter
+    def name(self, new_name):
+        self._hr['subject']['display'] = new_name
