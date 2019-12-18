@@ -1,15 +1,15 @@
-from ..fhir import Condition
+from ..fhir import ConditionFHIR
 
 
 class HealthRecord:
 
-    condition = Condition()
+    fhir = ConditionFHIR()
 
     def __init__(self, id=None, hr=None):
         if hr != None:
             self._hr = hr
         elif id != None:
-            self._hr, status_code = self.condition.get_id(id)
+            self._hr, status_code = self.fhir.get_id(id)
             if status_code != 200:
                 raise AttributeError("ID is invalid.")
         else:
@@ -31,19 +31,19 @@ class HealthRecord:
             }
         }
 
-        hr, status_code = cls.condition.create(health_record)
+        hr, status_code = cls.fhir.create(health_record)
         if status_code != 201:
             raise AttributeError("health_record data is invalid.")
 
         return cls(hr=hr)
 
     def delete(self):
-        self.condition.delete(self.id)
+        self.fhir.delete(self.id)
         del self._hr
 
     @classmethod
     def get_all(cls, offset=0, count=20):
-        hrs, status_code = cls.condition.get_all(offset, count)
+        hrs, status_code = cls.fhir.get_all(offset, count)
         if status_code != 200:
             raise SystemError("FHIR Condition API ERROR or FHIR SYSTEM Down")
 
@@ -55,7 +55,7 @@ class HealthRecord:
 
     @classmethod
     def query_patient(cls, patient_id, offset=0, count=20):
-        hrs, status_code = cls.condition.query_patient(patient_id, offset, count)
+        hrs, status_code = cls.fhir.query_patient(patient_id, offset, count)
         if status_code != 200:
             raise SystemError("FHIR Condition API ERROR or FHIR SYSTEM Down")
 
@@ -69,7 +69,7 @@ class HealthRecord:
         self.code = code
         self.medication = medication
 
-        self._hr, status_code = self.condition.update(self.id, self._hr)
+        self._hr, status_code = self.fhir.update(self.id, self.get())
         if status_code != 200:
             raise AttributeError("health_record data is invalid.")
 

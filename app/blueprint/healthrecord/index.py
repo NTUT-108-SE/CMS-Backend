@@ -47,11 +47,11 @@ def get_all():
             healthRecords(offset: %s, count: %s){
                 total
                 entry{
-                id
-                patientId
-                code
-                medication
-                date
+                    id
+                    patientId
+                    code
+                    medication
+                    date
                 }
                 offset
                 count
@@ -66,11 +66,11 @@ def get_all():
             healthRecords(offset: %s, count: %s, patientId: %s){
                 total
                 entry{
-                id
-                patientId
-                code
-                medication
-                date
+                    id
+                    patientId
+                    code
+                    medication
+                    date
                 }
                 offset
                 count
