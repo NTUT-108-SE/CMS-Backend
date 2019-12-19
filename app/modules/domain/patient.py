@@ -67,15 +67,6 @@ class Patient:
 
         return {'total': patients['total'], 'entry': _patients, 'offset': offset, 'count': count}
 
-    @classmethod
-    def query_patient(cls, patient_id, offset=0, count=20):
-        _patient, status_code = self.fhir.query_patient(identifier)
-        if status_code != 200 or _patient['total'] == 0:
-            raise AttributeError("Identifier is invalid.")
-        _patient = _patient['entry'][0]['resource']
-
-        return cls(patient=_patient)
-
     def update(self, identifier, family, given, phone, gender, birth_date, address, marital_status):
         self.identifier = identifier
         self.family = family
