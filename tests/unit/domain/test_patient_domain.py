@@ -40,19 +40,19 @@ def test_create(mock_fhir):
         "identifier": [{
             "value": identifier
         }],
-        "name": {
+        "name": [{
             "family": family,
-            "given": given
-        },
+            "given": [given]
+        }],
         "telecom": [{
             "system": "phone",
             "value": phone
         }],
         "gender": gender,
         "birthDate": birth_date,
-        "address": {
+        "address": [{
             "text": address
-        },
+        }],
         "maritalStatus": {
             "text": marital_status
         }
@@ -90,23 +90,24 @@ def test_update(mock_fhir):
     }, 200)
     patient = Patient(
         patient={
+            "id": 1,
             "resourceType": "Patient",
             "identifier": [{
                 "value": "1"
             }],
-            "name": {
+            "name": [{
                 "family": "1",
-                "given": "1"
-            },
+                "given": ["1"]
+            }],
             "telecom": [{
                 "system": "phone",
                 "value": "1"
             }],
             "gender": "1",
             "birthDate": "1",
-            "address": {
+            "address": [{
                 "text": "1"
-            },
+            }],
             "maritalStatus": {
                 "text": "1"
             }
@@ -125,19 +126,19 @@ def test_update(mock_fhir):
         "identifier": [{
             "value": identifier
         }],
-        "name": {
+        "name": [{
             "family": family,
-            "given": given
-        },
+            "given": [given]
+        }],
         "telecom": [{
             "system": "phone",
             "value": phone
         }],
         "gender": gender,
         "birthDate": birth_date,
-        "address": {
+        "address": [{
             "text": address
-        },
+        }],
         "maritalStatus": {
             "text": marital_status
         }
@@ -162,19 +163,19 @@ def test_get(mock_fhir):
         "identifier": [{
             "value": identifier
         }],
-        "name": {
+        "name": [{
             "family": family,
-            "given": given
-        },
+            "given": [given]
+        }],
         "telecom": [{
             "system": "phone",
             "value": phone
         }],
         "gender": gender,
         "birthDate": birth_date,
-        "address": {
+        "address": [{
             "text": address
-        },
+        }],
         "maritalStatus": {
             "text": marital_status
         }
@@ -189,5 +190,5 @@ def test_get(mock_fhir):
     assert gender == patient.gender
     assert birth_date == patient.birth_date
     assert address == patient.address
-    assert marital_status == patient.martial_status
+    assert marital_status == patient.marital_status
     assert patient.get() == return_value
