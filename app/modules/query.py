@@ -1,17 +1,20 @@
 # pylint: disable=no-member
 import graphene
+from mongoengine import DoesNotExist
+
 from .domain.user import User
 from .domain.healthrecord import HealthRecord
 from .domain.patient import Patient
 from .domain.management import Management
 from .domain.announcement import Announcement
+from .domain.medication import Medication
+
 from .sub_graphql.patient_graphql import PatientMeta, PatientsMeta
 from .sub_graphql.healthrecord_graphql import HealthRecordMeta, HealthRecordsMeta
 from .sub_graphql.user_graphql import UserMeta
 from .sub_graphql.announcement_graphql import AnnouncementMeta, AnnouncementsMeta
 from .sub_graphql.management_graphql import ManagementMeta
-from graphene_mongo import MongoengineObjectType
-from mongoengine import DoesNotExist
+from .sub_graphql.medication_graphql import MedicationMeta, MedicationsMeta
 
 
 class Result(graphene.ObjectType):
@@ -36,6 +39,11 @@ class Query(graphene.ObjectType):
     announcements = graphene.Field(AnnouncementsMeta, offset=graphene.Int(), count=graphene.Int())
 
     management = graphene.Field(ManagementMeta)
+
+    medication = graphene.Field(
+        MedicationMeta, id=graphene.Int(required=True), name=graphene.String()
+    )
+    medications = graphene.Field(MedicationsMeta, offset=graphene.Int(), count=graphene.Int())
 
     def resolve_user(self, info, email=None, id=None):
         try:
@@ -113,3 +121,17 @@ class Query(graphene.ObjectType):
     def resolve_management(self, info):
         management = Management()
         return management.get()
+
+    def resolve_medication(self, info, id):
+        try:
+            medication = Medication(id=id)
+            return medication
+        except Exception:
+            return None
+
+    def resolve_medications(self, info, offset=0, count=20):
+        try:
+            medications = Medication.get_all(offset=offset, count=count)
+            return medications
+        except Exception:
+            return None
