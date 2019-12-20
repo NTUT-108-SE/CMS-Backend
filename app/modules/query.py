@@ -8,6 +8,7 @@ from .domain.patient import Patient
 from .domain.management import Management
 from .domain.announcement import Announcement
 from .domain.medication import Medication
+from .domain.invoice import Invoice
 
 from .sub_graphql.patient_graphql import PatientMeta, PatientsMeta
 from .sub_graphql.healthrecord_graphql import HealthRecordMeta, HealthRecordsMeta
@@ -15,6 +16,7 @@ from .sub_graphql.user_graphql import UserMeta
 from .sub_graphql.announcement_graphql import AnnouncementMeta, AnnouncementsMeta
 from .sub_graphql.management_graphql import ManagementMeta
 from .sub_graphql.medication_graphql import MedicationMeta, MedicationsMeta
+from .sub_graphql.invoice_graphql import InvoiceMeta, InvoicesMeta
 
 
 class Result(graphene.ObjectType):
@@ -44,6 +46,9 @@ class Query(graphene.ObjectType):
         MedicationMeta, id=graphene.Int(required=True), name=graphene.String()
     )
     medications = graphene.Field(MedicationsMeta, offset=graphene.Int(), count=graphene.Int())
+
+    invoice = graphene.Field(InvoiceMeta, id=graphene.Int(required=True))
+    invoices = graphene.Field(InvoicesMeta, offset=graphene.Int(), count=graphene.Int())
 
     def resolve_user(self, info, email=None, id=None):
         try:
@@ -133,5 +138,33 @@ class Query(graphene.ObjectType):
         try:
             medications = Medication.get_all(offset=offset, count=count)
             return medications
+        except Exception:
+            return None
+
+    def resolve_invoice(self, info, id):
+        try:
+            invoice = Invoice(id=id)
+            return invoice
+        except Exception:
+            return None
+
+    def resolve_invoices(self, info, offset=0, count=20, patient_id=None):
+        try:
+            hrs = None
+            if patient_id == None:
+                hrs = HealthRecord.get_all(offset, count)
+            else:
+                hrs = HealthRecord.query_patient(patient_id, offset, count)
+            return hrs
+        except Exception:
+            return None
+
+        try:
+            invoices = None
+            if patient_id == None:
+                invoices = Invoice.get_all(offset=offset, count=count)
+            else:
+                invoices = Invoice.query_patient(patient_id, offset, count)
+            return invoices
         except Exception:
             return None

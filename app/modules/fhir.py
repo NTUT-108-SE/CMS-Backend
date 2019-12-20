@@ -104,6 +104,12 @@ class InvoiceFHIR(FHIR):
         res = requests.get(self.uri + "/{}".format(id))
         return res.json(), res.status_code
 
+    def query_patient(self, patient_id, offset=0, count=20):
+        res = requests.get(
+            self.uri + "?patient={}&_getpagesoffset={}&_count={}".format(patient_id, offset, count)
+        )
+        return res.json(), res.status_code
+
     def create(self, data):
         res = requests.post(self.uri, json=data)
         return res.json(), res.status_code

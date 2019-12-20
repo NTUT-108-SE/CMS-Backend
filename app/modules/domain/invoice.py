@@ -1,27 +1,31 @@
-from ..fhir import invoiceFHIR
+from ..fhir import InvoiceFHIR
 
 
 class Invoice:
 
     fhir = InvoiceFHIR()
 
-    def __init__(self, id):
-        if id != None:
+    def __init__(self, id=None, invoice=None):
+        if invoice != None:
+            self._invoice = invoice
+        elif id != None:
             self._invoice, status_code = self.fhir.get_id(id)
             if status_code != 200:
                 raise AttributeError("ID is invalid.")
+        else:
+            raise AttributeError("Invoice or ID must have one.")
 
     @classmethod
-    def create(cls, date, reference, text):
+    def create(cls, date, patient_id, text):  # here
         invoice = {
             "resourceType": "Invoice",
             "date": date,
             "subject": {
-                "reference": "Patient/" + reference
+                "reference": "Patient/{}".format(patient_id)
             },
-            "note": {
+            "note": [{
                 "text": text
-            }
+            }]
         }
 
         _invoice, status_code = cls.fhir.create(invoice)
@@ -42,6 +46,18 @@ class Invoice:
 
         return {'total': invoices['total'], 'entry': _invoices, 'offset': offset, 'count': count}
 
+    @classmethod
+    def query_patient(cls, patient_id, offset=0, count=20):
+        ivs, status_code = cls.fhir.query_patient(patient_id, offset, count)
+        if status_code != 200:
+            raise SystemError("FHIR INVOICE API ERROR or FHIR SYSTEM Down")
+
+        _ivs = []
+        for entry in ivs.get('entry', []):
+            _ivs.append(cls(iv=entry['resource']))
+
+        return {'total': ivs['total'], 'entry': _ivs, 'offset': offset, 'count': count}
+
     def get(self):
         return self._invoice
 
@@ -52,13 +68,19 @@ class Invoice:
     @property
     def date(self):
         return self._invoice['date']
-    
+
     @date.setter
     def date(self, new_date):
         self._invoice['date'] = new_date
-    
-    @property
-    def reference(self)
-        return self._invoice['subject']['reference']
 
-    #getter & setter
+    @property
+    def patient_id(self):
+        return self._invoice['subject']['reference'].split('/')[1]
+
+    @property
+    def text(self):
+        return self._invoice['note'][0]['text']
+
+    @text.setter
+    def text(self, new_text):
+        self._invoice['note'][0]['text'] = new_text

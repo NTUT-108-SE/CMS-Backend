@@ -6,6 +6,7 @@ from .sub_graphql.patient_graphql import CreatePatient, MutatePatient, DeletePat
 from .sub_graphql.management_graphql import MutateManagement
 from .sub_graphql.announcement_graphql import CreateAnnouncement, MutateAnnouncement, DeleteAnnouncement
 from .sub_graphql.medication_graphql import CreateMedication, MutateMedication, DeleteMedication
+from .sub_graphql.invoice_graphql import CreateInvoice
 
 
 class Mutation(graphene.ObjectType):
@@ -30,3 +31,5 @@ class Mutation(graphene.ObjectType):
     create_medication = CreateMedication.Field()
     mutate_medication = MutateMedication.Field()
     delete_medication = DeleteMedication.Field()
+
+    create_invoice = CreateInvoice.Field()
