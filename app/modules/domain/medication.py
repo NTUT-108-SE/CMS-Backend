@@ -9,7 +9,6 @@ class Medication:
         if medication != None:
             self._medication = medication
         elif id != None:
-
             self._medication, status_code = self.fhir.get_id(id)
             if status_code != 200:
                 raise AttributeError("ID is invalid.")
@@ -18,7 +17,6 @@ class Medication:
 
     @classmethod
     def create(cls, name, synonym, ingredient, dosage, patient_characteristics, contraindication):
-
         medication = {
             "resourceType": "MedicationKnowledge",
             "code": {

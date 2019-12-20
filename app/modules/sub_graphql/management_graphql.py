@@ -32,6 +32,6 @@ class MutateManagement(graphene.Mutation):
         try:
             management = Management()
             management.update(management_data)
-            return MutateManagement(ok=True, management=management)
+            return MutateManagement(ok=True, management=management.get())
         except Exception:
             return MutateManagement(ok=False, management=None)

@@ -19,20 +19,20 @@ def test_get_all(db):
         title="test title", context="test context", author="test author", date="2010-10-10"
     )
 
-    assert 2 == len(Announcement.get_all())
+    assert 2 == len(Announcement.get_all()['entry'])
 
-    assert 1 == len(Announcement.get_all(0, 1))
+    assert 1 == len(Announcement.get_all(0, 1)['entry'])
 
 
 def test_delete(db):
     announcement = Announcement.create(
         title="test title", context="test context", author="test author", date="2010-10-10"
     )
-    assert 1 == len(Announcement.get_all())
+    assert 1 == len(Announcement.get_all()['entry'])
 
     announcement.delete()
 
-    assert 0 == len(Announcement.get_all())
+    assert 0 == len(Announcement.get_all()['entry'])
 
 
 def test_get(db):

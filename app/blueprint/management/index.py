@@ -43,17 +43,17 @@ def change():
     if images is None or URLs is None or title is None or time is None or description is None or our_services is None or doctor_description is None or clinic_address is None:
         return make_response(jsonify({'ok': False, 'result': "Loss some management data"}, 400))
 
-    result = graphql.execute( # LIST?
+    result = graphql.execute(
         ''' 
     mutation{
         mutateManagement(managementData:{
-            images: "%s"
-            URLs: "%s"
-            title: "%s"
-            time: "%s"
-            description: "%s"
-            ourServices: "%s"
-            doctorDescription: "%s"
+            images: %s,
+            URLs: %s,
+            title: "%s",
+            time: "%s",
+            description: "%s",
+            ourServices: "%s",
+            doctorDescription: "%s",
             clinicAddress: "%s"
         }){
             ok
@@ -69,14 +69,16 @@ def change():
             }
         }
     }
-    ''' %
-        (images, URLs, title, time, description, our_services, doctor_description, clinic_address)
+    ''' % (
+            str(images).replace('\'', "\""), str(URLs).replace('\'', "\""), title, time,
+            description, our_services, doctor_description, clinic_address
+        )
     ).data['mutateManagement']
+
     ok = result['ok']
     management = result['management']
 
     return make_response(jsonify({'ok': ok, 'management': management}), 200 if ok else 400)
-    #return make_response(jsonify({'ok': True, 'result': 'information changed'}), 200)
 
 
 @management.route('announcements', methods=["GET"])

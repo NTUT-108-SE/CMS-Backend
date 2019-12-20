@@ -94,7 +94,7 @@ class PatientFHIR(FHIR):
 
 class InvoiceFHIR(FHIR):
     def __init__(self, uri="http://localhost:8080/hapi-fhir-jpaserver/fhir/"):
-        self.uri += "Invoice"  # here
+        self.uri = uri + "Invoice"
 
     def get_all(self, offset=0, count=20):
         res = requests.get(self.uri + "?_getpagesoffset={}&_count={}".format(offset, count))

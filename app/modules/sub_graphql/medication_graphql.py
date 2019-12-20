@@ -48,7 +48,7 @@ class CreateMedication(graphene.Mutation):
 
 class MutateMedication(graphene.Mutation):
     class Arguments:
-        id = graphene.Int()
+        id = graphene.Int(required=True)
         medication_data = MedicationInput(required=True)
 
     ok = graphene.Boolean()
@@ -66,7 +66,7 @@ class MutateMedication(graphene.Mutation):
 
 class DeleteMedication(graphene.Mutation):
     class Arguments:
-        id = graphene.Int()
+        id = graphene.Int(required=True)
 
     ok = graphene.Boolean()
 
