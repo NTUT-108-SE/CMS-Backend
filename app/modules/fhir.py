@@ -93,7 +93,7 @@ class PatientFHIR(FHIR):
 
 
 class MedicationFHIR(FHIR):
-    def __init__(self, uri="http://hapi.fhir.org/baseR4/"):
+    def __init__(self, uri="http://localhost:8080/hapi-fhir-jpaserver/fhir/"):
         self.uri = uri + "MedicationKnowledge"
 
     def get_all(self, offset=0, count=20):
