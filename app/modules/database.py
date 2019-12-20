@@ -1,5 +1,5 @@
 import re
-from mongoengine import Document, EmailField, StringField, BooleanField
+from mongoengine import Document, EmailField, StringField, BooleanField, ListField, DateTimeField
 
 
 class UserModel(Document):
@@ -9,3 +9,21 @@ class UserModel(Document):
     image = StringField()
     introduction = StringField()
     role = StringField(default="Nurse", regex=re.compile('(Nurse|Doctor|Admin)'))
+
+
+class ManagementModel(Document):
+    images = ListField(StringField(), required=True)  #require
+    URLs = ListField(StringField(), required=True)  #require
+    title = StringField(required=True)  #require
+    time = StringField(required=True)  #require 當天結束看診時間
+    description = StringField()
+    our_services = StringField()
+    doctor_description = StringField()
+    clinic_address = StringField()
+
+
+class AnnouncementModel(Document):
+    title = StringField(required=True)  #require
+    context = StringField(required=True)  #require
+    author = StringField(required=True)  #require
+    date = DateTimeField(required=True)  #require

@@ -103,7 +103,7 @@ def change(patient_id):
     phone = form.get('phone')
     birth_date = form.get('birthDate')
     marital_status = form.get('maritalStatus')
-    if identifier is None or address is None or gender is None or family is None or given is None or marital_status is None:
+    if identifier is None or address is None or gender is None or family is None or given is None or marital_status is None or birth_date is None or phone is None:
         return make_response(jsonify({'ok': False, 'result': "Loss some patient data"}, 400))
 
     result = graphql.execute(

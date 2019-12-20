@@ -3,9 +3,13 @@ import graphene
 from .domain.user import User
 from .domain.healthrecord import HealthRecord
 from .domain.patient import Patient
+from .domain.management import Management
+from .domain.announcement import Announcement
 from .sub_graphql.patient_graphql import PatientMeta, PatientsMeta
 from .sub_graphql.healthrecord_graphql import HealthRecordMeta, HealthRecordsMeta
 from .sub_graphql.user_graphql import UserMeta
+from .sub_graphql.announcement_graphql import AnnouncementMeta, AnnouncementsMeta
+from .sub_graphql.management_graphql import ManagementMeta
 from graphene_mongo import MongoengineObjectType
 from mongoengine import DoesNotExist
 
@@ -27,6 +31,11 @@ class Query(graphene.ObjectType):
 
     patient = graphene.Field(PatientMeta, id=graphene.Int(), identifier=graphene.String())
     patients = graphene.Field(PatientsMeta, offset=graphene.Int(), count=graphene.Int())
+
+    announcement = graphene.Field(AnnouncementMeta, id=graphene.String(required=True))
+    announcements = graphene.Field(AnnouncementsMeta, offset=graphene.Int(), count=graphene.Int())
+
+    management = graphene.Field(ManagementMeta)
 
     def resolve_user(self, info, email=None, id=None):
         try:
@@ -86,3 +95,21 @@ class Query(graphene.ObjectType):
             return patients
         except Exception:
             return None
+
+    def resolve_announcement(self, info, id):
+        try:
+            announcement = Announcement(id=id)
+            return announcement.get()
+        except Exception:
+            return None
+
+    def resolve_announcements(self, info, offset=0, count=20):
+        try:
+            announcements = Announcement.get_all(offset=offset, count=count)
+            return announcements
+        except Exception:
+            return None
+
+    def resolve_management(self, info):
+        management = Management()
+        return management.get()
