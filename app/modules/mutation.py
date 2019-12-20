@@ -3,7 +3,7 @@ import graphene
 from .sub_graphql.user_graphql import CreateUser, MutateUser, DeleteUser
 from .sub_graphql.healthrecord_graphql import CreateHealthRecord, MutateHealthRecord, DeleteHealthRecord
 from .sub_graphql.patient_graphql import CreatePatient, MutatePatient, DeletePatient
-# from .sub_graphql.management_graphql import MutateManagement, CreateAnnouncement, MutateAnnouncement, DeleteAnnouncement
+from .sub_graphql.medication_graphql import CreateMedication, MutateMedication, DeleteMedication
 
 
 class Mutation(graphene.ObjectType):
@@ -19,7 +19,6 @@ class Mutation(graphene.ObjectType):
     mutate_patient = MutatePatient.Field()
     delete_patient = DeletePatient.Field()
 
-    # mutate_management = MutateManagement.Field()
-    # create_announcement = CreateAnnouncement.Field()
-    # mutate_announcement = MutateAnnouncement.Field()
-    # delete_announcement = DeleteAnnouncement.Field()
+    create_medication = CreateMedication.Field()
+    mutate_medication = MutateMedication.Field()
+    delete_medication = DeleteMedication.Field()
