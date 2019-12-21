@@ -8,7 +8,7 @@ from flask.json import jsonify
 
 
 @registration.route('<registration_id>', methods=["GET"])
-# @login_required()
+@login_required()
 def get(registration_id):
     registration = graphql.execute(
         '''
@@ -30,7 +30,7 @@ def get(registration_id):
 
 
 @registration.route('', methods=["GET"])
-# @login_required()
+@login_required()
 def get_registrations():
     identifier = request.args.get('identifier', None)
     date = request.args.get('date', None)
@@ -55,7 +55,7 @@ def get_registrations():
 
 
 @registration.route('time', methods=["POST"])
-# @login_required()
+@login_required()
 def set_time():
     form = json.loads(list(request.form.keys())[0])
     time = form.get('time')
@@ -85,7 +85,7 @@ def set_time():
 
 
 @registration.route('<registration_id>', methods=["DELETE"])
-# @login_required()
+@login_required()
 def delete(registration_id):
     ok = graphql.execute(
         '''
@@ -100,7 +100,7 @@ def delete(registration_id):
 
 
 @registration.route('', methods=["POST"])
-# @login_required()
+@login_required()
 def create():
     if is_registration_end():
         return make_response(
@@ -210,7 +210,7 @@ def is_registration_end():
 
 
 @registration.route('next', methods=["GET"])
-# @login_required()
+@login_required()
 def next():
 
     result = graphql.execute(
@@ -238,7 +238,7 @@ def next():
 
 
 @registration.route('skip', methods=["GET"])
-# @login_required()
+@login_required()
 def skip():
     result = graphql.execute(
         '''
