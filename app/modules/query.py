@@ -9,6 +9,7 @@ from .domain.management import Management
 from .domain.announcement import Announcement
 from .domain.medication import Medication
 from .domain.invoice import Invoice
+from .domain.registration import Registration
 
 from .sub_graphql.patient_graphql import PatientMeta, PatientsMeta
 from .sub_graphql.healthrecord_graphql import HealthRecordMeta, HealthRecordsMeta
@@ -17,6 +18,7 @@ from .sub_graphql.announcement_graphql import AnnouncementMeta, AnnouncementsMet
 from .sub_graphql.management_graphql import ManagementMeta
 from .sub_graphql.medication_graphql import MedicationMeta, MedicationsMeta
 from .sub_graphql.invoice_graphql import InvoiceMeta, InvoicesMeta
+from .sub_graphql.registration_graphql import RegistrationMeta
 
 
 class Result(graphene.ObjectType):
@@ -49,6 +51,12 @@ class Query(graphene.ObjectType):
 
     invoice = graphene.Field(InvoiceMeta, id=graphene.Int(required=True))
     invoices = graphene.Field(InvoicesMeta, offset=graphene.Int(), count=graphene.Int())
+
+    registration = graphene.Field(RegistrationMeta, id=graphene.String())
+    registrations = graphene.List(
+        RegistrationMeta, identifier=graphene.String(), registration_date=graphene.String()
+    )
+    latest_order = graphene.Int()
 
     def resolve_user(self, info, email=None, id=None):
         try:
@@ -168,3 +176,26 @@ class Query(graphene.ObjectType):
             return invoices
         except Exception:
             return None
+
+    def resolve_registration(self, info, id=None):
+        try:
+            if id != None:
+                return Registration(id=id).get()
+            else:
+                return None
+        except DoesNotExist:
+            return None
+
+    def resolve_registrations(self, info, identifier=None, registration_date=None):
+        try:
+            if identifier != str(None):
+                return Registration(identifier=identifier).get_result()
+            elif registration_date != str(None):
+                return Registration(registration_date=registration_date).get_result()
+            else:
+                return Registration.get_all()
+        except DoesNotExist:
+            return None
+
+    def resolve_latest_order(self, info):
+        return Registration.get_latest_order()

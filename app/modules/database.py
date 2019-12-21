@@ -1,5 +1,5 @@
 import re
-from mongoengine import Document, EmailField, StringField, BooleanField, ListField, DateTimeField
+from mongoengine import Document, EmailField, StringField, BooleanField, ListField, DateTimeField, DateField, IntField
 
 
 class UserModel(Document):
@@ -27,3 +27,11 @@ class AnnouncementModel(Document):
     context = StringField(required=True)  #require
     author = StringField(required=True)  #require
     date = DateTimeField(required=True)  #require
+
+
+class RegistrationModel(Document):
+    identifier = StringField(required=True)
+    name = StringField(required=True, max_length=30)
+    birth_date = DateField(required=True)
+    registration_date = DateField(required=True)
+    order = IntField(required=True)
