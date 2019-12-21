@@ -8,7 +8,7 @@ from flask.json import jsonify
 
 
 @registration.route('<registration_id>', methods=["GET"])
-@login_required()
+# @login_required()
 def get(registration_id):
     registration = graphql.execute(
         '''
@@ -30,7 +30,7 @@ def get(registration_id):
 
 
 @registration.route('', methods=["GET"])
-@login_required()
+# @login_required()
 def get_registrations():
     identifier = request.args.get('identifier', None)
     date = request.args.get('date', None)
@@ -55,7 +55,7 @@ def get_registrations():
 
 
 @registration.route('time', methods=["POST"])
-@login_required()
+# @login_required()
 def set_time():
     form = json.loads(list(request.form.keys())[0])
     time = form.get('time')
@@ -89,7 +89,7 @@ def set_time():
 
 
 @registration.route('<registration_id>', methods=["DELETE"])
-@login_required()
+# @login_required()
 def delete(registration_id):
     ok = graphql.execute(
         '''
@@ -104,7 +104,7 @@ def delete(registration_id):
 
 
 @registration.route('', methods=["POST"])
-@login_required()
+# @login_required()
 def create():
     if is_registration_end():
         return make_response(
@@ -209,10 +209,10 @@ def is_registration_end():
 
 
 @registration.route('next', methods=["GET"])
-@login_required()
+# @login_required()
 def next():
 
-    registrations_data = graphql.execute(
+    result = graphql.execute(
         '''
      mutation {
         nextRegistration {
@@ -231,18 +231,15 @@ def next():
     '''
     ).data['nextRegistration']
 
-    if registrations_data == None or len(registrations_data['registrations']) == 0:
-        return make_response(jsonify({'ok': False}), 400)
-
-    ok = registrations_data['ok']
-    registrations = registrations_data['registrations']
-    return make_response(jsonify({'ok': ok, 'registrations': registrations}), 200)
+    ok = result['ok']
+    registrations = result['registrations']
+    return make_response(jsonify({'ok': ok, 'registrations': registrations}), 200 if ok else 400)
 
 
 @registration.route('skip', methods=["GET"])
-@login_required()
+# @login_required()
 def skip():
-    registrations_data = graphql.execute(
+    result = graphql.execute(
         '''
        mutation {
         skipRegistration {
@@ -259,9 +256,7 @@ def skip():
     }
     '''
     ).data['skipRegistration']
-    if registrations_data['registrations'] == None:
-        return make_response(jsonify({'ok': False}), 400)
-
-    ok = registrations_data['ok']
-    registrations = registrations_data['registrations']
-    return make_response(jsonify({'ok': ok, 'registrations': registrations}), 200)
+  
+    ok = result['ok']
+    registrations = result['registrations']
+    return make_response(jsonify({'ok': ok, 'registrations': registrations}), 200 if ok else 400)
