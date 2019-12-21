@@ -69,22 +69,18 @@ def set_time():
         }){
             ok
             management{
-                images
-                URLs
+               
                 title
                 time
-                description
-                ourServices
-                doctorDescription
-                clinicAddress
+               
             }
         }
     }
     ''' % time
     ).data['mutateManagement']
     ok = result['ok']
-    management = result['management']
-
+    time = result['management']['time']
+    
     return make_response(jsonify({'ok': True, 'time': time}), 200 if ok else 400)
 
 
@@ -198,14 +194,19 @@ def get_registration_time():
 def is_registration_end():
     current_hour = datetime.now().hour
     current_minute = datetime.now().minute
-    registration_time = datetime.strptime(get_registration_time(), "%H:%M")
-    registration_hour = registration_time.hour
-    registration_minute = registration_time.minute
-    if (current_hour > registration_hour):
+
+    try:
+        registration_time = datetime.strptime(get_registration_time(), "%H:%M")
+        registration_hour = registration_time.hour
+        registration_minute = registration_time.minute
+        if (current_hour > registration_hour):
+            return True
+        elif (current_hour == registration_hour and current_minute > registration_minute):
+            return True
+        return False
+    except Exception:
         return True
-    elif (current_hour == registration_hour and current_minute > registration_minute):
-        return True
-    return False
+   
 
 
 @registration.route('next', methods=["GET"])
