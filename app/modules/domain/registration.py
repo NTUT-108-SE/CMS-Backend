@@ -81,22 +81,25 @@ class Registration:
     def get_result(self):
         return list(self._registrations)
 
-    def get_latest_order():
-        return RegistrationModel.objects.order_by('-id').first().order
+    def get_latest_order(self):
+        latest = len(self._registrations) - 1
+        if latest != -1:
+            return self._registrations[latest].order
+        return 0
 
-    def next():
-        RegistrationModel.objects.first().delete()
-        registrations = RegistrationModel.objects.all()
-        return list(registrations)
+    def next(self):
+        self._registrations[0].delete()
+        self._registrations[0].save()
+        self._registrations[0].reload()
+        return list(self._registrations)
 
-    def skip():
-        identifier = RegistrationModel.objects.first().identifier
-        name = RegistrationModel.objects.first().name
-        birth_date = RegistrationModel.objects.first().birth_date
-        registration_date = RegistrationModel.objects.first().registration_date
-        order = RegistrationModel.objects.order_by('-id').first().order + 1
-        RegistrationModel.objects.first().delete()
-
+    def skip(self):
+        latest = len(self._registrations) - 1
+        identifier = self._registrations[0].identifier
+        name = self._registrations[0].name
+        birth_date = self._registrations[0].birth_date
+        registration_date = self._registrations[0].registration_date
+        order = self._registrations[latest].order + 1
         registration = RegistrationModel(
             identifier=identifier,
             name=name,
@@ -106,5 +109,8 @@ class Registration:
         )
         registration.save()
         registration.reload()
-        registrations = RegistrationModel.objects.all()
-        return list(registrations)
+        self._registrations[0].delete()
+        self._registrations[0].save()
+        self._registrations[0].reload()
+
+        return list(RegistrationModel.objects(registration_date=registration_date))

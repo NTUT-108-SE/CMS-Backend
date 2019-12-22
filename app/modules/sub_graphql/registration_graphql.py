@@ -62,26 +62,38 @@ class DeleteRegistration(graphene.Mutation):
 
 
 class SkipRegistration(graphene.Mutation):
+    class Arguments:
+        registration_date = graphene.String()
+
     ok = graphene.Boolean()
     registrations = graphene.List(RegistrationMeta)
 
-    def mutate(root, info):
+    def mutate(root, info, registration_date=None):
         try:
-            registrations = Registration.skip()
-            ok = True
-            return SkipRegistration(ok=ok, registrations=registrations)
+            if registration_date != None:
+                registrations = Registration(registration_date=registration_date).skip()
+                ok = True
+                return SkipRegistration(ok=ok, registrations=registrations)
+            else:
+                raise AttributeError("Date should be assigned!")
         except Exception:
             return SkipRegistration(ok=False, registrations=None)
 
 
 class NextRegistration(graphene.Mutation):
+    class Arguments:
+        registration_date = graphene.String()
+
     ok = graphene.Boolean()
     registrations = graphene.List(RegistrationMeta)
 
-    def mutate(root, info):
+    def mutate(root, info, registration_date=None):
         try:
-            registrations = Registration.next()
-            ok = True
-            return SkipRegistration(ok=ok, registrations=registrations)
+            if registration_date != None:
+                registrations = Registration(registration_date=registration_date).next()
+                ok = True
+                return NextRegistration(ok=ok, registrations=registrations)
+            else:
+                raise AttributeError("Date should be assigned!")
         except Exception:
-            return SkipRegistration(ok=False, registrations=None)
+            return NextRegistration(ok=False, registrations=None)

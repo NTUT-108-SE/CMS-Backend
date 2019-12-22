@@ -56,7 +56,7 @@ class Query(graphene.ObjectType):
     registrations = graphene.List(
         RegistrationMeta, identifier=graphene.String(), registration_date=graphene.String()
     )
-    latest_order = graphene.Int()
+    latest_order = graphene.Int(registration_date=graphene.String())
 
     def resolve_user(self, info, email=None, id=None):
         try:
@@ -189,6 +189,7 @@ class Query(graphene.ObjectType):
     def resolve_registrations(self, info, identifier=None, registration_date=None):
         try:
             if identifier != str(None):
+
                 return Registration(identifier=identifier).get_result()
             elif registration_date != str(None):
                 return Registration(registration_date=registration_date).get_result()
@@ -197,5 +198,13 @@ class Query(graphene.ObjectType):
         except DoesNotExist:
             return None
 
-    def resolve_latest_order(self, info):
-        return Registration.get_latest_order()
+    def resolve_latest_order(self, info, registration_date=None):
+
+        try:
+            if registration_date != None:
+                Registration(registration_date=registration_date)
+                return Registration(registration_date=registration_date).get_latest_order()
+            else:
+                return None
+        except DoesNotExist:
+            return None

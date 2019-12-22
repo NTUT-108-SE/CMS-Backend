@@ -32,8 +32,8 @@ def get(registration_id):
 @registration.route('', methods=["GET"])
 @login_required()
 def get_registrations():
-    identifier = request.args.get('identifier', None)
-    date = request.args.get('date', None)
+    identifier = request.args.get('identifier')
+    date = request.args.get('date')
 
     registrations = graphql.execute(
         '''
@@ -80,7 +80,7 @@ def set_time():
     ).data['mutateManagement']
     ok = result['ok']
     time = result['management']['time']
-    
+
     return make_response(jsonify({'ok': True, 'time': time}), 200 if ok else 400)
 
 
@@ -120,7 +120,7 @@ def create():
         return make_response(jsonify({'ok': False, 'message': 'Something is missing'}), 400)
 
     name = patient_name['family'] + patient_name['given']
-    latest_order = get_latest_order()
+    latest_order = get_latest_order(registration_date)
     order = latest_order + 1 if latest_order else 1
 
     result = graphql.execute(
@@ -167,13 +167,13 @@ def get_patient_name(identifier):
     return patient_name
 
 
-def get_latest_order():
+def get_latest_order(registration_date):
     latest_order = graphql.execute(
         '''
         query {
-            latestOrder
+            latestOrder(registrationDate: "%s")
         }
-        '''
+        ''' % registration_date
     ).data['latestOrder']
     return latest_order
 
@@ -206,17 +206,16 @@ def is_registration_end():
         return False
     except Exception:
         return True
-   
 
 
 @registration.route('next', methods=["GET"])
 @login_required()
 def next():
-
+    registration_date = datetime.today().strftime('%Y-%m-%d')
     result = graphql.execute(
         '''
      mutation {
-        nextRegistration {
+        nextRegistration(registrationDate: "%s") {
             ok
             registrations {
                 id
@@ -229,7 +228,7 @@ def next():
         }
     }
 
-    '''
+    ''' % registration_date
     ).data['nextRegistration']
 
     ok = result['ok']
@@ -240,10 +239,12 @@ def next():
 @registration.route('skip', methods=["GET"])
 @login_required()
 def skip():
+    registration_date = datetime.today().strftime('%Y-%m-%d')
+
     result = graphql.execute(
         '''
        mutation {
-        skipRegistration {
+        skipRegistration(registrationDate: "%s") {
             ok
                 registrations {
                     id
@@ -255,9 +256,9 @@ def skip():
             }    
         }
     }
-    '''
+    ''' % registration_date
     ).data['skipRegistration']
-  
+
     ok = result['ok']
     registrations = result['registrations']
     return make_response(jsonify({'ok': ok, 'registrations': registrations}), 200 if ok else 400)
