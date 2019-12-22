@@ -60,6 +60,9 @@ def set_time():
     form = json.loads(list(request.form.keys())[0])
     time = form.get('time')
 
+    if time is None:
+        return make_response(jsonify({'ok': False}, 400))
+
     result = graphql.execute(
         '''
      mutation{
