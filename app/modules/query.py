@@ -158,16 +158,6 @@ class Query(graphene.ObjectType):
 
     def resolve_invoices(self, info, offset=0, count=20, patient_id=None):
         try:
-            hrs = None
-            if patient_id == None:
-                hrs = HealthRecord.get_all(offset, count)
-            else:
-                hrs = HealthRecord.query_patient(patient_id, offset, count)
-            return hrs
-        except Exception:
-            return None
-
-        try:
             invoices = None
             if patient_id == None:
                 invoices = Invoice.get_all(offset=offset, count=count)

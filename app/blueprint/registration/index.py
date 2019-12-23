@@ -103,7 +103,6 @@ def delete(registration_id):
 
 
 @registration.route('', methods=["POST"])
-@login_required()
 def create():
     if is_registration_end():
         return make_response(

@@ -20,6 +20,8 @@ def get_all_invoices():
                     id
                     date
                     patientId
+                    name
+                    identifier
                     text
                 },
                 offset,
@@ -47,6 +49,8 @@ def get_patient_invoices():
                     id
                     date
                     patientId
+                    name
+                    identifier
                     text
                 },
                 offset,
@@ -77,6 +81,8 @@ def get(invoice_id):
                     id
                     date
                     patientId
+                    name
+                    identifier
                     text
                 }
             }
@@ -97,9 +103,11 @@ def create():
     form = json.loads(list(request.form.keys())[0])
     date = form.get('address')
     patient_id = form.get('patientId')
+    name = form.get('name')
+    identifier = form.get('identifier')
     text = form.get('text')
 
-    if date is None or patient_id is None or text is None:
+    if date is None or patient_id is None or name is None or identifier is None or text is None:
         return make_response(jsonify({'ok': False, 'result': "Loss some invoice data"}, 400))
 
     result = graphql.execute(
@@ -108,6 +116,8 @@ def create():
             createInvoice(invoiceData:{
                 date: "%s",
                 patientId: %s,
+                name: "%s",
+                identifier: "%s",
                 text: "%s"
             }){
                 ok
@@ -115,11 +125,13 @@ def create():
                     id
                     date
                     patientId
+                    name
+                    identifier
                     text
                 }
             }
         }
-        ''' % (date, patient_id, text)
+        ''' % (date, patient_id, name, identifier, text)
     ).data['createInvoice']
 
     ok = result['ok']

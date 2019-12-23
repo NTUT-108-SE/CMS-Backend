@@ -16,12 +16,16 @@ class Invoice:
             raise AttributeError("Invoice or ID must have one.")
 
     @classmethod
-    def create(cls, date, patient_id, text):  # here
+    def create(cls, date, patient_id, name, identifier, text):
         invoice = {
             "resourceType": "Invoice",
             "date": date,
             "subject": {
-                "reference": "Patient/{}".format(patient_id)
+                "reference": "Patient/{}".format(patient_id),
+                "display": name,
+                "identifier": {
+                    'value': identifier
+                }
             },
             "note": [{
                 "text": text
@@ -76,6 +80,22 @@ class Invoice:
     @property
     def patient_id(self):
         return self._invoice['subject']['reference'].split('/')[1]
+
+    @property
+    def name(self):
+        return self._invoice['subject']['display']
+
+    @name.setter
+    def name(self, new_name):
+        self._invoice['subject']['display'] = new_name
+
+    @property
+    def identifier(self):
+        return self._invoice['subject']['identifier']['value']
+
+    @identifier.setter
+    def identifier(self, new_identifier):
+        self._invoice['subject']['identifier']['value'] = new_identifier
 
     @property
     def text(self):

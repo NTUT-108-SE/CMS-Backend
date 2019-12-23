@@ -7,7 +7,6 @@ from app.modules.graphql import graphql
 
 
 @management.route('', methods=["GET"])
-@login_required()
 def get():
     management = graphql.execute(
         '''
@@ -82,7 +81,6 @@ def change():
 
 
 @management.route('announcements', methods=["GET"])
-@login_required()
 def get_announcements():
     offset = request.args.get('offset', default=0, type=int)
     count = request.args.get('count', default=20, type=int)
@@ -109,7 +107,6 @@ def get_announcements():
 
 
 @management.route('announcement/<announcements_id>', methods=["GET"])
-@login_required()
 def get_announcement(announcements_id):
     announcement = graphql.execute(
         '''
@@ -223,7 +220,7 @@ def delete_announcement(announcement_id):
     ok = graphql.execute(
         '''
         mutation {
-            deleteAnnouncement(id:"5dfc7e2ab2b644a852c96f3c"){
+            deleteAnnouncement(id:"%s"){
                 ok
                 }
             }

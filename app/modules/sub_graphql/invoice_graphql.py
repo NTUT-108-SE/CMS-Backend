@@ -6,6 +6,8 @@ class InvoiceMeta(graphene.ObjectType):
     id = graphene.Int()
     date = graphene.String()
     patient_id = graphene.Int()
+    name = graphene.String()
+    identifier = graphene.String()
     text = graphene.String()
 
 
@@ -19,6 +21,8 @@ class InvoicesMeta(graphene.ObjectType):
 class InvoiceInput(graphene.InputObjectType):
     date = graphene.String()
     patient_id = graphene.Int()
+    name = graphene.String()
+    identifier = graphene.String()
     text = graphene.String()
 
 
