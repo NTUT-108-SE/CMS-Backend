@@ -179,7 +179,6 @@ class Query(graphene.ObjectType):
     def resolve_registrations(self, info, identifier=None, registration_date=None):
         try:
             if identifier != str(None):
-
                 return Registration(identifier=identifier).get_result()
             elif registration_date != str(None):
                 return Registration(registration_date=registration_date).get_result()

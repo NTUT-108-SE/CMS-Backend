@@ -75,7 +75,13 @@ def get_current_order():
     ).data['registrations']
     if len(registrations) == 0:
         return make_response(jsonify({'ok': False}), 400)
-    return make_response(jsonify({'ok': True, 'order': registrations[0]['order'], 'total': len(registrations)}), 200)
+    return make_response(
+        jsonify({
+            'ok': True,
+            'order': registrations[0]['order'],
+            'total': len(registrations)
+        }), 200
+    )
 
 
 @registration.route('time', methods=["POST"])
