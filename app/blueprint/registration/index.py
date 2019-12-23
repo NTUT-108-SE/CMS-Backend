@@ -54,6 +54,30 @@ def get_registrations():
     return make_response(jsonify({'ok': True, 'registrations': registrations}), 200)
 
 
+@registration.route('order', methods=["GET"])
+def get_current_order():
+    identifier = None
+    date = datetime.today().strftime('%Y-%m-%d')
+
+    registrations = graphql.execute(
+        '''
+    query {
+      registrations(identifier:"%s", registrationDate: "%s") {
+            id
+            name
+            identifier
+            birthDate
+            registrationDate
+            order
+        }
+    }
+    ''' % (identifier, date)
+    ).data['registrations']
+    if len(registrations) == 0:
+        return make_response(jsonify({'ok': False}), 400)
+    return make_response(jsonify({'ok': True, 'order': registrations[0]['order']}), 200)
+
+
 @registration.route('time', methods=["POST"])
 @login_required()
 def set_time():
