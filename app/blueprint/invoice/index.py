@@ -101,7 +101,7 @@ def get(invoice_id):
 @login_required()
 def create():
     form = json.loads(list(request.form.keys())[0])
-    date = form.get('address')
+    date = form.get('date')
     patient_id = form.get('patientId')
     name = form.get('name')
     identifier = form.get('identifier')

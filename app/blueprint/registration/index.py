@@ -49,8 +49,7 @@ def get_registrations():
     }
     ''' % (identifier, date)
     ).data['registrations']
-    if len(registrations) == 0:
-        return make_response(jsonify({'ok': False}), 400)
+
     return make_response(jsonify({'ok': True, 'registrations': registrations}), 200)
 
 
@@ -98,14 +97,11 @@ def set_time():
      mutation{
         mutateManagement(managementData:{
             time: "%s",
-
         }){
             ok
             management{
-               
                 title
                 time
-               
             }
         }
     }
@@ -134,19 +130,19 @@ def delete(registration_id):
 
 @registration.route('', methods=["POST"])
 def create():
-    if is_registration_end():
+    form = json.loads(list(request.form.keys())[0])
+    identifier = form.get('identifier')
+    birth_date = form.get('birthDate')
+    registration_date = form.get('registrationDate')
+    patient_name = get_patient_name(identifier)
+
+    if is_registration_end(registration_date):
         return make_response(
             jsonify({
                 'ok': False,
                 'message': "The registration time has passed"
             }), 400
         )
-
-    form = json.loads(list(request.form.keys())[0])
-    identifier = form.get('identifier')
-    birth_date = form.get('birth_date')
-    registration_date = form.get('registration_date')
-    patient_name = get_patient_name(identifier)
 
     if identifier == None or registration_date == None or birth_date == None or patient_name == None:
         return make_response(jsonify({'ok': False, 'message': 'Something is missing'}), 400)
@@ -223,7 +219,10 @@ def get_registration_time():
     return management['time']
 
 
-def is_registration_end():
+def is_registration_end(registration_date):
+    if registration_date != datetime.today().strftime("%Y-%m-%d"):
+        return False
+
     current_hour = datetime.now().hour
     current_minute = datetime.now().minute
 

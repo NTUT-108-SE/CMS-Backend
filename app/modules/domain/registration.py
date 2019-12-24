@@ -63,15 +63,6 @@ class Registration:
     def get_name(self):
         return self._registration['name']
 
-    def is_authenticated(self):
-        return True if self.get_id() is not None else False
-
-    def is_active(self):
-        return True
-
-    def is_anonymous(self):
-        return not self.is_authenticated
-
     def get_registration_date(self):
         return self._registration['registration_date']
 
@@ -89,8 +80,6 @@ class Registration:
 
     def next(self):
         self._registrations[0].delete()
-        self._registrations[0].save()
-        self._registrations[0].reload()
         return list(self._registrations)
 
     def skip(self):
@@ -110,7 +99,5 @@ class Registration:
         registration.save()
         registration.reload()
         self._registrations[0].delete()
-        self._registrations[0].save()
-        self._registrations[0].reload()
 
         return list(RegistrationModel.objects(registration_date=registration_date))

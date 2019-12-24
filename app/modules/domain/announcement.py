@@ -36,9 +36,9 @@ class Announcement:
         if offset >= length or length == 0:
             _announcements = []
         elif offset + count >= length:
-            _announcements = list(AnnouncementModel.objects[offset:])
+            _announcements = list(AnnouncementModel.objects().order_by('-id')[offset:])
         else:
-            _announcements = list(AnnouncementModel.objects[offset:count])
+            _announcements = list(AnnouncementModel.objects().order_by('-id')[offset:count])
 
         return {'total': length, 'entry': _announcements, 'offset': offset, 'count': count}
 
