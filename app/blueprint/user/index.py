@@ -52,7 +52,7 @@ def get_user(user_id):
 
 @user.route('/<user_id>', methods=["POST"])
 @login_required(role="Admin")
-def update_role(user_id):
+def change_role(user_id):
     ok = False
     form = json.loads(list(request.form.keys())[0])
     role = form.get('role')

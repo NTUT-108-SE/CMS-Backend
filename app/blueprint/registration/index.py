@@ -29,6 +29,25 @@ def get(registration_id):
     return make_response(jsonify({'ok': True, 'registration': registration}), 200)
 
 
+@registration.route('identifier', methods=["GET"])
+def get_identifier_registrations():
+    identifier = request.args.get('identifier')
+
+    registrations = graphql.execute(
+        '''
+    query {
+      registrations(identifier: "%s") {
+            name
+            registrationDate
+            order
+        }
+    }
+    ''' % (identifier)
+    ).data['registrations']
+
+    return make_response(jsonify({'ok': True, 'registrations': registrations}), 200)
+
+
 @registration.route('', methods=["GET"])
 @login_required()
 def get_registrations():
@@ -73,7 +92,7 @@ def get_current_order():
     ''' % (identifier, date)
     ).data['registrations']
     if len(registrations) == 0:
-        return make_response(jsonify({'ok': False}), 400)
+        return make_response(jsonify({'ok': True, 'order': 0, 'total': 0}), 200)
     return make_response(
         jsonify({
             'ok': True,
