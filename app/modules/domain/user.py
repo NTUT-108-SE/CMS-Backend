@@ -2,14 +2,10 @@ import graphene
 import bcrypt
 from bson.objectid import ObjectId
 from ..database import UserModel
-from graphene_mongo import MongoengineObjectType
 from mongoengine import DoesNotExist
 
 
-class User(MongoengineObjectType):
-    class Meta:
-        model = UserModel
-
+class User:
     def __init__(self, email=None, user=None, id=None):
         if user != None:
             self._user = user

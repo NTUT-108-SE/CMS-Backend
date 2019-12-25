@@ -1,5 +1,12 @@
 import graphene
+from graphene_mongo import MongoengineObjectType
 from ..domain.user import User
+from ..database import UserModel
+
+
+class UserMeta(MongoengineObjectType):
+    class Meta:
+        model = UserModel
 
 
 class UserInput(graphene.InputObjectType):
@@ -17,7 +24,7 @@ class CreateUser(graphene.Mutation):
         user_data = UserInput(required=True)
 
     ok = graphene.Boolean()
-    user = graphene.Field(User)
+    user = graphene.Field(UserMeta)
 
     @staticmethod
     def mutate(root, info, user_data):
@@ -33,7 +40,7 @@ class MutateUser(graphene.Mutation):
         user_data = UserInput(required=True)
 
     ok = graphene.Boolean()
-    user = graphene.Field(User)
+    user = graphene.Field(UserMeta)
 
     @staticmethod
     def mutate(root, info, user_data):
