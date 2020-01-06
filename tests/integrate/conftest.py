@@ -2,6 +2,7 @@ import pytest
 from app import create_app
 from mongoengine import disconnect_all
 from app.modules.domain.user import User
+from app.modules.domain.announcement import Announcement
 
 
 @pytest.fixture
@@ -54,3 +55,14 @@ def admin_client(user_client):
 
     res = user_client.get("/logout")
     assert res.status_code == 200
+
+
+@pytest.fixture
+def management_client(admin_client):
+    ann1 = Announcement.create("test title", "test context", "admin", "2010-10-10")
+    ann2 = Announcement.create("test title2", "test context2", "admin", "2010-10-10")
+
+    yield admin_client
+
+    ann1.delete()
+    ann2.delete()

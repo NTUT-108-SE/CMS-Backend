@@ -6,3 +6,7 @@ omit =
     */__init__.py
     app/modules/login_manager.py
     app/modules/fhir.py
+    app/modules/sub_graphql/invoice_graphql.py
+    app/modules/sub_graphql/medication_graphql.py
+    app/modules/sub_graphql/patient_graphql.py
+    app/modules/sub_graphql/healthrecord_graphql.py
