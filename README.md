@@ -10,6 +10,19 @@ A project for [Clinic Management System](https://github.com/NTUT-108-SE/SE-CMS) 
 pipenv install --dev
 ```
 
+## Configuration
+
+```bash
+cp .environment.template .environment
+vim .enviroment
+```
+
+## Run docker
+
+```bash
+docker-compose up -d
+```
+
 ## Run
 
 ```bash
